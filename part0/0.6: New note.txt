@@ -1,0 +1,11 @@
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note over browser
+browser send the added note to the server
+end note
+note over server
+server merge new note with local data.json file
+end note
+server-->browser: data.json
+note over browser
+browser render notes
+end note
