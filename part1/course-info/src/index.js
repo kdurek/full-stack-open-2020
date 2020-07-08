@@ -20,7 +20,7 @@ const Content = ({ parts }) => {
         <Part
           name={ele.name}
           exercises={ele.exercises}
-          key={item.name.slice(0, 2) + idx}
+          key={ele.name.slice(0, 2) + idx}
         />
       ))}
     </>
