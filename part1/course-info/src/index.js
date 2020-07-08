@@ -17,7 +17,11 @@ const Content = ({ parts }) => {
   return (
     <>
       {parts.map((ele, idx) => (
-        <Part name={ele.name} exercises={ele.exercises} key={idx} />
+        <Part
+          name={ele.name}
+          exercises={ele.exercises}
+          key={item.name.slice(0, 2) + idx}
+        />
       ))}
     </>
   );
