@@ -3,21 +3,20 @@ import ReactDOM from "react-dom";
 
 const Statistic = ({ text, value }) => {
   return (
-    <p>
-      {text} {value}
-    </p>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   );
 };
 
-const Statistics = ({ stats }) => {
-  const total = stats[0].good + stats[1].neutral + stats[2].bad;
-
+const Statistics = ({ total, good, neutral, bad }) => {
   const getAverageScore = () => {
-    return ((stats[0].good - stats[2].bad) / total).toFixed(2);
+    return ((good - bad) / total).toFixed(2);
   };
 
   const getPositivePercentage = () => {
-    return ((stats[0].good / total) * 100).toFixed(2);
+    return ((good / total) * 100).toFixed(2);
   };
 
   if (total === 0) {
@@ -29,12 +28,16 @@ const Statistics = ({ stats }) => {
   } else {
     return (
       <div>
-        <p>good {stats[0].good}</p>
-        <p>neutral {stats[1].neutral}</p>
-        <p>bad {stats[2].bad}</p>
-        <Statistic text={"all"} value={total} />
-        <Statistic text={"average"} value={getAverageScore()} />
-        <Statistic text={"positive"} value={getPositivePercentage()} />
+        <table>
+          <tbody>
+            <Statistic text={"good"} value={good} />
+            <Statistic text={"neutral"} value={neutral} />
+            <Statistic text={"bad"} value={bad} />
+            <Statistic text={"all"} value={total} />
+            <Statistic text={"average"} value={getAverageScore()} />
+            <Statistic text={"positive"} value={getPositivePercentage()} />
+          </tbody>
+        </table>
       </div>
     );
   }
@@ -45,31 +48,32 @@ const Button = (props) => (
 );
 
 const App = () => {
-  // save clicks of each button to own state
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
+  const [total, setTotal] = useState(0);
 
-  const stateHooks = {
-    setGood() {
-      setGood(good + 1);
-    },
-    setNeutral() {
-      setNeutral(neutral + 1);
-    },
-    setBad() {
-      setBad(bad + 1);
-    },
+  const handleGoodClick = () => {
+    setTotal(total + 1);
+    setGood(good + 1);
+  };
+  const handleNeutralClick = () => {
+    setTotal(total + 1);
+    setNeutral(neutral + 1);
+  };
+  const handleBadClick = () => {
+    setTotal(total + 1);
+    setBad(bad + 1);
   };
 
   return (
     <div>
       <h1>give feedback</h1>
-      <Button handleClick={() => stateHooks.setGood()} text="good" />
-      <Button handleClick={() => stateHooks.setNeutral()} text="neutral" />
-      <Button handleClick={() => stateHooks.setBad()} text="bad" />
+      <Button handleClick={handleGoodClick} text="good" />
+      <Button handleClick={handleNeutralClick} text="neutral" />
+      <Button handleClick={handleBadClick} text="bad" />
       <h1>statistics</h1>
-      <Statistics stats={[{ good }, { neutral }, { bad }]} />
+      <Statistics total={total} good={good} neutral={neutral} bad={bad} />
     </div>
   );
 };
