@@ -12,11 +12,9 @@ const PersonForm = ({
       <div>
         <p>
           name: <input onChange={handleNameChange} value={valueName} />
-          debug: {valueName}
         </p>
         <p>
           number: <input onChange={handleNumberChange} value={valueNumber} />
-          debug: {valueNumber}
         </p>
       </div>
 
