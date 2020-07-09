@@ -9,7 +9,7 @@ const App = () => {
   // const [capitalCity, setCapitalCity] = useState("");
   // const [weather, setWeather] = useState([]);
 
-  console.log(process.env.REACT_APP_SECRET_NAME);
+  console.log(process.env.REACT_APP_API_KEY);
 
   useEffect(() => {
     axios.get("https://restcountries.eu/rest/v2/all").then((response) => {
@@ -42,6 +42,7 @@ const App = () => {
 
   return (
     <div>
+      {process.env.REACT_APP_API_KEY}
       <Filter valueFilter={newFilter} handleFilterChange={handleFilterChange} />
       <Countries
         filter={newFilter}
