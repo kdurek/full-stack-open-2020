@@ -1,28 +1,44 @@
 import React from "react";
 import Country from "./Country";
 
-const Countries = ({ filter, countries }) => {
+const Countries = ({
+  filter,
+  countries,
+  weather,
+  showCountry,
+  handleCountryChange,
+}) => {
   const filteredCountries = countries.filter((country) =>
     country.name.toLowerCase().includes(filter.toLowerCase())
   );
-  console.log(filteredCountries);
 
   if (filteredCountries.length === countries.length) {
     return <div></div>;
   } else if (filteredCountries.length === 1) {
-    return <Country country={filteredCountries[0]} />;
+    handleCountryChange(filteredCountries[0].capital);
+    return <Country country={filteredCountries[0]} weather={weather} />;
   } else if (filteredCountries.length <= 10) {
     return (
       <div>
-        {filteredCountries.map((country) => (
-          <p key={country.name}>{country.name}</p>
-        ))}
+        <b>
+          {filteredCountries.map((country) => (
+            <div key={country.name}>
+              <span>{country.name}</span>
+              <button type="button" value={country.name} onClick={showCountry}>
+                show
+              </button>
+              <br />
+            </div>
+          ))}
+        </b>
       </div>
     );
   } else {
     return (
       <div>
-        <p>Too many matches, specify another filter</p>
+        <p>
+          <b>Too many matches, specify another filter</b>
+        </p>
       </div>
     );
   }

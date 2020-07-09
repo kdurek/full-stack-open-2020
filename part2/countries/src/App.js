@@ -6,24 +6,50 @@ import axios from "axios";
 const App = () => {
   const [countries, setCountries] = useState([]);
   const [newFilter, setNewFilter] = useState("");
+  // const [capitalCity, setCapitalCity] = useState("");
+  // const [weather, setWeather] = useState([]);
+
+  console.log(process.env.REACT_APP_SECRET_NAME);
 
   useEffect(() => {
-    console.log("effect");
     axios.get("https://restcountries.eu/rest/v2/all").then((response) => {
-      console.log("promise fulfilled");
       setCountries(response.data);
     });
   }, []);
-  console.log("render", countries.length, "notes");
+  console.log("render", countries.length, "countries");
+
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `http://api.weatherstack.com/current?access_key=${process.env.REACT_APP_SECRET_NAME}&query=${capitalCity}`
+  //     )
+  //     .then((response) => {
+  //       setWeather(response.data);
+  //     });
+  // }, [process.env.REACT_APP_SECRET_NAME, capitalCity]);
+  // console.log("weather", weather.length, "set");
 
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value);
   };
 
+  const showCountry = (event) => {
+    event.preventDefault();
+    setNewFilter(event.target.value);
+  };
+
+  // const handleCountryChange = (capital) => setCapitalCity(capital);
+
   return (
     <div>
       <Filter valueFilter={newFilter} handleFilterChange={handleFilterChange} />
-      <Countries filter={newFilter} countries={countries} />
+      <Countries
+        filter={newFilter}
+        countries={countries}
+        // weather={weather}
+        showCountry={showCountry}
+        // handleCountryChange={handleCountryChange}
+      />
     </div>
   );
 };
