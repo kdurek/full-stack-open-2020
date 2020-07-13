@@ -5,7 +5,6 @@ const Filter = ({ valueFilter, handleFilterChange }) => {
     <div>
       filter shown with
       <input onChange={handleFilterChange} value={valueFilter} />
-      debug: {valueFilter}
     </div>
   );
 };
