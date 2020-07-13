@@ -5,9 +5,9 @@ const Persons = ({ filter, persons }) => {
   return (
     <div>
       {persons
-        .filter((person) => person.name.includes(filter))
+        .filter((person) => person.name.toLowerCase().includes(filter))
         .map((person) => (
-          <Person name={person.name} number={person.number} key={person.name} />
+          <Person name={person.name} number={person.number} key={person.id} />
         ))}
     </div>
   );
