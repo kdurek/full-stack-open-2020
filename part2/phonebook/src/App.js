@@ -10,7 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((response) => {
@@ -46,12 +47,28 @@ const App = () => {
                 person.id !== targetPerson.id ? person : response.data
               )
             );
+            setMessageType("confirmation");
+            setMessage(`Changed ${newName} number`);
+            setTimeout(() => {
+              setMessage(null);
+              setMessageType(null);
+            }, 5000);
           });
       }
     } else if (duplicateNumberCheck) {
-      alert(`${newNumber} is already added to phonebook`);
+      setMessageType("error");
+      setMessage(`${newNumber} is already added to phonebook`);
+      setTimeout(() => {
+        setMessage(null);
+        setMessageType(null);
+      }, 5000);
     } else if (newName === "" || newNumber === "") {
-      alert(`Field can't be empty`);
+      setMessageType("error");
+      setMessage(`Field can't be empty`);
+      setTimeout(() => {
+        setMessage(null);
+        setMessageType(null);
+      }, 5000);
     } else {
       const personObject = {
         name: newName,
@@ -61,9 +78,11 @@ const App = () => {
         setPersons(persons.concat(response.data));
         setNewName("");
         setNewNumber("");
-        setErrorMessage(`Added ${personObject.name}`);
+        setMessageType("confirmation");
+        setMessage(`Added ${personObject.name}`);
         setTimeout(() => {
-          setErrorMessage(null);
+          setMessage(null);
+          setMessageType(null);
         }, 5000);
       });
     }
@@ -72,9 +91,28 @@ const App = () => {
   const handleRemoveClick = (id) => {
     const targetPerson = persons.find((person) => person.id === id);
     if (window.confirm(`Delete ${targetPerson.name}?`)) {
-      personService.remove(id).then(() => {
-        setPersons(persons.filter((person) => person.id !== id));
-      });
+      personService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id));
+          setMessageType("error");
+          setMessage(`Deleted ${targetPerson.name}`);
+          setTimeout(() => {
+            setMessage(null);
+            setMessageType(null);
+          }, 5000);
+        })
+        .catch((error) => {
+          setPersons(persons.filter((person) => person.id !== id));
+          setMessageType("error");
+          setMessage(
+            `'Information of ${targetPerson.name} has already been removed from server`
+          );
+          setTimeout(() => {
+            setMessage(null);
+            setMessageType(null);
+          }, 5000);
+        });
     }
   };
 
@@ -93,7 +131,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage} />
+      <Notification message={message} messageType={messageType} />
       <Filter valueFilter={newFilter} handleFilterChange={handleFilterChange} />
       <h3>add a new</h3>
       <PersonForm
