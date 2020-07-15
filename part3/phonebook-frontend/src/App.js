@@ -18,7 +18,6 @@ const App = () => {
       setPersons(response.data);
     });
   }, []);
-  console.log("rendered", persons.length, "notes");
 
   const handleAddClick = (event) => {
     event.preventDefault();
@@ -37,7 +36,6 @@ const App = () => {
         )
       ) {
         const targetPerson = persons.find((person) => person.name === newName);
-        console.log("targetPerson: ", targetPerson);
         const changedNumber = { ...targetPerson, number: newNumber };
         personService
           .update(targetPerson.id, changedNumber)
@@ -74,17 +72,27 @@ const App = () => {
         name: newName,
         number: newNumber,
       };
-      personService.create(personObject).then((response) => {
-        setPersons(persons.concat(response.data));
-        setNewName("");
-        setNewNumber("");
-        setMessageType("confirmation");
-        setMessage(`Added ${personObject.name}`);
-        setTimeout(() => {
-          setMessage(null);
-          setMessageType(null);
-        }, 5000);
-      });
+      personService
+        .create(personObject)
+        .then((response) => {
+          setPersons(persons.concat(response));
+          setNewName("");
+          setNewNumber("");
+          setMessageType("confirmation");
+          setMessage(`Added ${personObject.name}`);
+          setTimeout(() => {
+            setMessage(null);
+            setMessageType(null);
+          }, 5000);
+        })
+        .catch((error) => {
+          setMessageType("error");
+          setMessage(`${JSON.stringify(error.response.data.error)}`);
+          setTimeout(() => {
+            setMessage(null);
+            setMessageType("error");
+          }, 5000);
+        });
     }
   };
 

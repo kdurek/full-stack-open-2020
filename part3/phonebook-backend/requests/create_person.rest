@@ -1,7 +1,0 @@
-POST https://fso2020-phonebook.herokuapp.com/api/persons
-Content-Type: application/json
-
-{
-    "name": "Second",
-    "number": "2345"
-}
