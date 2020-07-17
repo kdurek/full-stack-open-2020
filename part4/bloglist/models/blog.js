@@ -1,22 +1,16 @@
 const mongoose = require("mongoose");
 
-mongoose.set("useFindAndModify", false);
-
 const blogSchema = mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  author: {
-    type: String,
-    required: true,
-  },
-  url: {
-    type: String,
-    required: true,
-  },
+  title: { type: String },
+  author: { type: String },
+  url: { type: String },
   likes: {
     type: Number,
+    default: 0,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 
@@ -28,6 +22,10 @@ blogSchema.set("toJSON", {
   },
 });
 
-const Blog = mongoose.model("Blog", blogSchema, "blogs");
-
-module.exports = Blog;
+if (process.env.NODE_ENV === "test") {
+  const Blog = mongoose.model("Blog", blogSchema, "blogs-test");
+  module.exports = Blog;
+} else {
+  const Blog = mongoose.model("Blog", blogSchema, "blogs");
+  module.exports = Blog;
+}
