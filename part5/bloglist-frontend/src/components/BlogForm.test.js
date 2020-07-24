@@ -22,9 +22,9 @@ describe("BlogForm", () => {
 
   test("correctly calls the handler prop on submit", () => {
     const form = component.container.querySelector("form");
-    const titleInput = component.container.querySelector("#titleInput");
-    const authorInput = component.container.querySelector("#authorInput");
-    const urlInput = component.container.querySelector("#urlInput");
+    const titleInput = component.container.querySelector("#blogform__title");
+    const authorInput = component.container.querySelector("#blogform__author");
+    const urlInput = component.container.querySelector("#blogform__url");
 
     fireEvent.change(titleInput, {
       target: {

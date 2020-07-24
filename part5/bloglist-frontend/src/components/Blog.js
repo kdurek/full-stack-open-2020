@@ -24,18 +24,24 @@ const Blog = ({ blog, handleLikeBlog, handleRemoveBlog }) => {
   );
 
   return (
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       <div style={hideWhenExpanded}>
-        {blog.title} <button onClick={toggleExpanded}>show</button>
+        {blog.title}{" "}
+        <button id="blog__show" onClick={toggleExpanded}>
+          show
+        </button>
       </div>
 
       <div style={showWhenExpanded}>
-        {blog.title} <button onClick={toggleExpanded}>hide</button>
+        {blog.title}{" "}
+        <button className="blog__hide" onClick={toggleExpanded}>
+          hide
+        </button>
         <br />
         <a href={blog.url}>{blog.url}</a>
         <br />
         {blog.likes}{" "}
-        <button value={id} onClick={handleLikeBlog}>
+        <button className="blog__like" value={id} onClick={handleLikeBlog}>
           like
         </button>
         <br />

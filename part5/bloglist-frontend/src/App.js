@@ -67,7 +67,6 @@ const App = () => {
     blogFormRef.current.toggleVisibility();
     const savedBlog = await blogService.create(blog);
     setBlogs(blogs.concat(savedBlog));
-
     notification(`a new blog ${blog.title} added`, "confirmation");
   };
 
@@ -80,12 +79,12 @@ const App = () => {
       author: blog.author,
       url: blog.url,
       likes: blog.likes + 1,
-      user: blog.user.id,
-      // || blog.user,
+      user: blog.user.id || blog.user,
     };
 
     const savedBlog = await blogService.update(id, changedBlog);
     setBlogs(blogs.map((blog) => (blog.id !== id ? blog : savedBlog)));
+    notification(`you liked ${blog.title}`, "confirmation");
   };
 
   const handleRemoveBlog = async (event) => {
@@ -96,6 +95,7 @@ const App = () => {
       try {
         await blogService.remove(id);
         setBlogs(blogs.filter((n) => n.id !== id));
+        notification(`you deleted ${blog.title}`, "error");
       } catch (exception) {
         console.log(exception);
         notification("erorik", "error");
