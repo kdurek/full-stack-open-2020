@@ -1,28 +1,30 @@
 import React from "react";
+import { connect } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
 import { voteFor } from "../reducers/anecdoteReducer";
+import { showNotification } from "../reducers/notificationReducer";
 
-const Anecdote = ({ anecdote }) => {
-  const dispatch = useDispatch();
+const AnecdoteList = ({ showNotification, voteFor }) => {
+  const anecdotes = useSelector((state) => state.anecdote);
+  // const dispatch = useDispatch();
 
-  const vote = (id) => {
-    console.log("vote", id);
-    dispatch(voteFor(id));
-  };
+  const Anecdote = ({ anecdote }) => {
+    const vote = (anecdote) => {
+      voteFor(anecdote);
 
-  return (
-    <div>
-      <div>{anecdote.content}</div>
+      showNotification(`You voted ${anecdote.content}`, 5);
+    };
+
+    return (
       <div>
-        has {anecdote.votes}
-        <button onClick={() => vote(anecdote.id)}>vote</button>
+        <div>{anecdote.content}</div>
+        <div>
+          has {anecdote.votes}
+          <button onClick={() => vote(anecdote)}>vote</button>
+        </div>
       </div>
-    </div>
-  );
-};
-
-const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => state);
+    );
+  };
 
   return (
     <>
@@ -37,4 +39,15 @@ const AnecdoteList = () => {
   );
 };
 
-export default AnecdoteList;
+const mapStateToProps = ({ anecdote }) => {
+  return {
+    anecdote,
+  };
+};
+
+const ConnectedAnecdoteList = connect(mapStateToProps, {
+  voteFor,
+  showNotification,
+})(AnecdoteList);
+
+export default ConnectedAnecdoteList;
