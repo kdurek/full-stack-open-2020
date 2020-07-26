@@ -1,12 +1,11 @@
 import React from "react";
-import { connect } from "react-redux";
-import { useDispatch, useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { voteFor } from "../reducers/anecdoteReducer";
 import { showNotification } from "../reducers/notificationReducer";
 
 const AnecdoteList = ({ showNotification, voteFor }) => {
   const anecdotes = useSelector((state) => state.anecdote);
-  // const dispatch = useDispatch();
+  const filter = useSelector((state) => state.filter);
 
   const Anecdote = ({ anecdote }) => {
     const vote = (anecdote) => {
@@ -30,6 +29,7 @@ const AnecdoteList = ({ showNotification, voteFor }) => {
     <>
       {anecdotes
         .sort((a, b) => b.votes - a.votes)
+        .filter((anecdote) => anecdote.content.includes(filter))
         .map((anecdote) => (
           <div key={anecdote.id}>
             <Anecdote anecdote={anecdote} />
