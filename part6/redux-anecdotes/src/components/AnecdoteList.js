@@ -1,17 +1,16 @@
 import React from "react";
-import { connect, useSelector } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import { voteFor } from "../reducers/anecdoteReducer";
 import { showNotification } from "../reducers/notificationReducer";
 
 const AnecdoteList = ({ showNotification, voteFor }) => {
   const anecdotes = useSelector((state) => state.anecdote);
   const filter = useSelector((state) => state.filter);
+  const dispatch = useDispatch();
 
   const Anecdote = ({ anecdote }) => {
     const vote = (anecdote) => {
       voteFor(anecdote);
-
-      showNotification(`You voted ${anecdote.content}`, 5);
     };
 
     return (

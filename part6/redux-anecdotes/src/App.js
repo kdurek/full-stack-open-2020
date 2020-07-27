@@ -13,7 +13,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initAnecdotes());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
