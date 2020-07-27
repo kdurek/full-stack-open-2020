@@ -29,7 +29,7 @@ const AnecdoteList = ({ showNotification, voteFor }) => {
     <>
       {anecdotes
         .sort((a, b) => b.votes - a.votes)
-        .filter((anecdote) => anecdote.content.includes(filter))
+        .filter((anecdote) => anecdote.content.toLowerCase().includes(filter))
         .map((anecdote) => (
           <div key={anecdote.id}>
             <Anecdote anecdote={anecdote} />
