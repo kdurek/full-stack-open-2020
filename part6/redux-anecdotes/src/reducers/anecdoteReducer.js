@@ -53,10 +53,13 @@ export const voteFor = (anecdote) => {
   };
 };
 
-export const createAnecdote = (data) => {
-  return {
-    type: "CREATE_ANECDOTE",
-    data,
+export const createAnecdote = (content) => {
+  return async (dispatch) => {
+    const newAnecdote = await anecdoteService.createNew(content);
+    dispatch({
+      type: "CREATE_ANECDOTE",
+      data: newAnecdote,
+    });
   };
 };
 
