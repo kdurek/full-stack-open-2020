@@ -1,0 +1,33 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+export const useCountry = (name) => {
+  const [country, setCountry] = useState(null);
+
+  const url = `https://restcountries.eu/rest/v2/name/${name}?fullText=true`;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (name) {
+          const result = await axios(url);
+
+          if (result) {
+            const data = result.data[0];
+            const found = true;
+            setCountry({ data, found });
+          }
+        }
+      } catch (error) {
+        console.error(error);
+        const data = null;
+        const found = false;
+        setCountry({ data, found });
+      }
+    };
+
+    fetchData();
+  }, [name, url]);
+
+  return country;
+};
